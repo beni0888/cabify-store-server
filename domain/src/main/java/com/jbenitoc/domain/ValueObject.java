@@ -1,4 +1,4 @@
-package com.jbenitoc.model;
+package com.jbenitoc.domain;
 
 import lombok.*;
 

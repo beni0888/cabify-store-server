@@ -1,6 +1,6 @@
-package com.jbenitoc.model.store;
+package com.jbenitoc.domain.store;
 
-public class ItemNameIsNotValid extends IllegalArgumentException {
+public final class ItemNameIsNotValid extends IllegalArgumentException {
 
     private ItemNameIsNotValid(String message) {
         super(message);

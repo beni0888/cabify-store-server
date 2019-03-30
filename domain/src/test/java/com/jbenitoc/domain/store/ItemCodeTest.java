@@ -1,4 +1,4 @@
-package com.jbenitoc.model.store;
+package com.jbenitoc.domain.store;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

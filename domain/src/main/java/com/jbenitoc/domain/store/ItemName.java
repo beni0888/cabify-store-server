@@ -1,6 +1,6 @@
-package com.jbenitoc.model.store;
+package com.jbenitoc.domain.store;
 
-import com.jbenitoc.model.ValueObject;
+import com.jbenitoc.domain.ValueObject;
 
 public final class ItemName extends ValueObject<String> {
 

@@ -1,4 +1,4 @@
-package com.jbenitoc.model.store;
+package com.jbenitoc.domain.store;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

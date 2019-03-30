@@ -1,8 +1,8 @@
-package com.jbenitoc.model.store;
+package com.jbenitoc.domain.store;
 
 import java.math.BigDecimal;
 
-public class ItemPriceIsNotValid extends IllegalArgumentException {
+public final class ItemPriceIsNotValid extends IllegalArgumentException {
 
     private ItemPriceIsNotValid(String s) {
         super(s);
