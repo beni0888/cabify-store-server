@@ -1,4 +1,4 @@
-package com.jbenitoc.infrastructure.rest;
+package com.jbenitoc.infrastructure;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

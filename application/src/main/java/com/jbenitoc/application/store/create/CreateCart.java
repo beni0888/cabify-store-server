@@ -3,14 +3,12 @@ package com.jbenitoc.application.store.create;
 import com.jbenitoc.domain.store.Cart;
 import com.jbenitoc.domain.store.CartId;
 import com.jbenitoc.domain.store.CartRepository;
+import lombok.AllArgsConstructor;
 
-public final class CreateCart {
+@AllArgsConstructor
+public class CreateCart {
 
-    CartRepository cartRepository;
-
-    public CreateCart(CartRepository cartRepository) {
-        this.cartRepository = cartRepository;
-    }
+    private CartRepository cartRepository;
 
     public Cart execute() {
         Cart cart = Cart.create(CartId.create());
