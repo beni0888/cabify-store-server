@@ -5,7 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ItemQuantityTest {
 
@@ -30,4 +30,15 @@ class ItemQuantityTest {
 
         assertThat(itemQuantity.getValue()).isEqualTo(quantity);
     }
+
+    @Test
+    void givenTwoQuantities_whenSum_thenANewQuantityWithTheResultingSumIsReturned() {
+        ItemQuantity quantity1 = ItemQuantity.create(1);
+        ItemQuantity quantity2 = ItemQuantity.create(2);
+
+        ItemQuantity resultingQuantity = quantity1.sum(quantity2);
+
+        assertThat(resultingQuantity).isEqualTo(ItemQuantity.create(quantity1.getValue() + quantity2.getValue()));
+    }
+
 }

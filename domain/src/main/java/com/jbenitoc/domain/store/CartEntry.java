@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "create")
 @Getter
 @EqualsAndHashCode
 public final class CartEntry {
-    private final Item item;
+    private final ItemCode itemCode;
     private final ItemQuantity quantity;
 }

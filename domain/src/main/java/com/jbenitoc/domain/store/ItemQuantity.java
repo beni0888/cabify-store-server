@@ -18,4 +18,8 @@ public final class ItemQuantity extends ValueObject<Integer> {
             throw new ItemQuantityIsNotValid();
         }
     }
+
+    public ItemQuantity sum(ItemQuantity quantity) {
+        return ItemQuantity.create(this.value + quantity.value);
+    }
 }
