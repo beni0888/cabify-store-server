@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,6 +34,17 @@ class CartTest {
         Optional<CartEntry> cartEntry = cart.getEntry(item.getCode());
 
         assertThat(cartEntry.get().getQuantity()).isEqualTo(ItemQuantity.create(3));
+    }
+
+    @Test
+    void givenMultipleItems_whenAddItemIsCalledMultipleTimes_thenAllItemsAreAddedToCart() {
+        Item item1 = anItem("VOUCHER", "Cabify Voucher", BigDecimal.valueOf(5.0));
+        Item item2 = anItem("TSHIRT", "Cabify T-shirt", BigDecimal.valueOf(1.0));
+
+        cart.addEntry(item1, ItemQuantity.create(1));
+        cart.addEntry(item2, ItemQuantity.create(1));
+
+        Stream.of(item1, item2).forEach(item -> assertThat(cart.getEntry(item.getCode())).isNotEmpty());
     }
 
     private Item anItem(String code, String name, BigDecimal price) {
