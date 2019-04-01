@@ -16,7 +16,7 @@ public class InMemoryItemRepository implements ItemRepository {
 
     @Override
     public Optional<Item> findByCode(ItemCode itemCode) {
-        return Optional.of(items.get(itemCode));
+        return Optional.ofNullable(items.get(itemCode));
     }
 
     @Override
