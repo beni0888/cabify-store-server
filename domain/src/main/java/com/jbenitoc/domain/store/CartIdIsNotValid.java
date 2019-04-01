@@ -2,7 +2,7 @@ package com.jbenitoc.domain.store;
 
 public final class CartIdIsNotValid extends IllegalArgumentException {
 
-    public CartIdIsNotValid() {
-        super("Cart ID is not valid, it cannot be null");
+    public CartIdIsNotValid(String id) {
+        super(String.format("Cart ID [%s] is not valid, it should be a valid UUID", id));
     }
 }

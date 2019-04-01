@@ -14,8 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.UUID;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -61,7 +59,7 @@ class ApiControllerTest {
         String requestPayload = jsonMapper.writeValueAsString(addItemRequest);
         AddItemToCartCommand command = new AddItemToCartCommand(nonExistentCartId, addItemRequest.itemCode, addItemRequest.quantity);
 
-        doThrow(new CartDoesNotExist(CartId.create(UUID.fromString(nonExistentCartId)))).when(addItemToCart).execute(command);
+        doThrow(new CartDoesNotExist(CartId.create(nonExistentCartId))).when(addItemToCart).execute(command);
 
         mockMvc.perform(post("/cart/{id}/item", nonExistentCartId).content(requestPayload).contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound())

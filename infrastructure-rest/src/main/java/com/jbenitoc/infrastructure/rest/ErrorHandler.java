@@ -19,4 +19,12 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     public ErrorResponse handleNotFoundError(RuntimeException ex) {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
+
+    @ExceptionHandler({IllegalArgumentException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorResponse handleIllegalArgumentError(IllegalArgumentException ex) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    }
+
 }

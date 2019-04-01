@@ -12,7 +12,7 @@ public class AddItemToCart {
     private ItemRepository itemRepository;
 
     public void execute(AddItemToCartCommand command) {
-        CartId cartId = CartId.create(UUID.fromString(command.cartId));
+        CartId cartId = CartId.create(command.cartId);
         ItemCode itemCode = ItemCode.create(command.itemCode);
         ItemQuantity quantity = ItemQuantity.create(command.quantity);
 

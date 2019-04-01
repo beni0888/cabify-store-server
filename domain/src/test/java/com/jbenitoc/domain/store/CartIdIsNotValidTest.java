@@ -13,14 +13,21 @@ class CartIdIsNotValidTest {
     @Test
     void givenNullId_whenCreate_thenItThrowsAnException() {
         Exception e = assertThrows(CartIdIsNotValid.class, () -> CartId.create(null));
-        assertThat(e.getMessage()).isEqualTo("Cart ID is not valid, it cannot be null");
+        assertThat(e.getMessage()).isEqualTo("Cart ID [null] is not valid, it should be a valid UUID");
+    }
+
+    @Test
+    void givenInvalidUUID_whenCreate_thenItThrowsAnException() {
+        String invalidUUID = "foo";
+        Exception e = assertThrows(CartIdIsNotValid.class, () -> CartId.create(invalidUUID));
+        assertThat(e.getMessage()).isEqualTo("Cart ID [foo] is not valid, it should be a valid UUID");
     }
 
     @Test
     void givenValidId_whenCreate_thenItWorks() {
         UUID id = randomUUID();
 
-        CartId cartId = CartId.create(id);
+        CartId cartId = CartId.create(id.toString());
 
         assertThat(cartId.getValue()).isEqualTo(id);
     }

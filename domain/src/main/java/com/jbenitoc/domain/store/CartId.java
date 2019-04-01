@@ -12,7 +12,7 @@ public final class CartId extends ValueObject<UUID> {
         super(id);
     }
 
-    public static CartId create(UUID id) {
+    private static CartId create(UUID id) {
         assertValid(id);
         return new CartId(id);
     }
@@ -21,9 +21,21 @@ public final class CartId extends ValueObject<UUID> {
         return create(randomUUID());
     }
 
+    public static CartId create(String id) {
+        return create(parseUUID(id));
+    }
+
+    private static UUID parseUUID(String id) {
+        try {
+            return UUID.fromString(id);
+        } catch (Exception e) {
+            throw new CartIdIsNotValid(id);
+        }
+    }
+
     private static void assertValid(UUID id) {
         if (id == null) {
-            throw new CartIdIsNotValid();
+            throw new CartIdIsNotValid(null);
         }
     }
 }
