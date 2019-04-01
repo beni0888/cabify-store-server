@@ -1,4 +1,4 @@
-package com.jbenitoc.infrastructure;
+package com.jbenitoc.infrastructure.configuration;
 
 import com.jbenitoc.application.store.add.AddItemToCart;
 import com.jbenitoc.application.store.create.CreateCart;

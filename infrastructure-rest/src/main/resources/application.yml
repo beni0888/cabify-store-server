@@ -1,0 +1,18 @@
+spring.application.name: cabify-rest-server
+management.endpoints:
+  web.exposure.include: "*"
+  logfile.external-file: logs/cabify-rest-server.log
+
+spring.boot.admin.client.url: http://localhost:10011
+
+cabify.store:
+  products:
+    - code: "VOUCHER"
+      name: "Cabify Voucher"
+      price: 5.00
+    - code: "TSHIRT"
+      name: "Cabify T-Shirt"
+      price: 20.00
+    - code: "MUG"
+      name: "Cafify Coffee Mug"
+      price: 7.50
