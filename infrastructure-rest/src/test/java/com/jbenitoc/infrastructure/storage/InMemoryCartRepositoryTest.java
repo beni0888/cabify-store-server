@@ -37,4 +37,23 @@ class InMemoryCartRepositoryTest {
 
         assertThat(optionalCart).isEmpty();
     }
+
+    @Test
+    void givenACart_whenRemove_thenItIsRemoved() {
+        Cart cart = Cart.create(CartId.create());
+
+        repository.save(cart);
+        repository.remove(cart);
+
+        assertThat(repository.findById(cart.getId())).isEmpty();
+    }
+
+    @Test
+    void givenACartWhichIsNotInTheRepository_whenRemove_thenNoErrorIsThrown() {
+        Cart cart = Cart.create(CartId.create());
+
+        repository.remove(cart);
+
+        assertThat(repository.findById(cart.getId())).isEmpty();
+    }
 }

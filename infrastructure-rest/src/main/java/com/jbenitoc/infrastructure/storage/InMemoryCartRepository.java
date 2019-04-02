@@ -23,4 +23,9 @@ public final class InMemoryCartRepository implements CartRepository {
     public Optional<Cart> findById(CartId id) {
         return Optional.ofNullable(carts.get(id));
     }
+
+    @Override
+    public void remove(Cart cart) {
+        carts.remove(cart.getId());
+    }
 }

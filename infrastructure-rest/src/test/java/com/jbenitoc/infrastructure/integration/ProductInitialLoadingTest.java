@@ -1,7 +1,8 @@
-package com.jbenitoc.infrastructure.configuration;
+package com.jbenitoc.infrastructure.integration;
 
 import com.jbenitoc.domain.store.ItemCode;
 import com.jbenitoc.domain.store.ItemRepository;
+import com.jbenitoc.infrastructure.configuration.ProductsConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

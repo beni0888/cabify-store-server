@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jbenitoc.application.store.add.AddItemToCart;
 import com.jbenitoc.application.store.add.AddItemToCartCommand;
 import com.jbenitoc.application.store.create.CreateCart;
+import com.jbenitoc.application.store.delete.DeleteCart;
+import com.jbenitoc.application.store.delete.DeleteCartCommand;
 import com.jbenitoc.domain.store.*;
 import com.jbenitoc.infrastructure.rest.dto.AddItemRequest;
 import org.hamcrest.CoreMatchers;
@@ -18,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,13 +29,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ApiControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
-    ObjectMapper jsonMapper;
+    private ObjectMapper jsonMapper;
     @MockBean
-    CreateCart createCart;
+    private CreateCart createCart;
     @MockBean
-    AddItemToCart addItemToCart;
+    private AddItemToCart addItemToCart;
+    @MockBean
+    private DeleteCart deleteCart;
 
     @Test
     void givenCreateCartRequest_whenExecuted_thenACartIsCreatedAndReturned() throws Exception {
@@ -80,6 +85,25 @@ class ApiControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", is(HttpStatus.NOT_FOUND.value())))
                 .andExpect(jsonPath("$.message", CoreMatchers.containsString("There is no item with given code")));
+    }
+
+    @Test
+    void givenCartId_whenDeleteCart_thenTheAssociatedCartIsRemovedFromRepository() throws Exception {
+        mockMvc.perform(delete("/cart/{id}", aCartId()))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void givenNonExistentCartId_whenDeleteCart_thenAErrorIsRaisedAndProperResponseIsReturned() throws Exception {
+        String nonExistentCartId = aCartId();
+        DeleteCartCommand command = new DeleteCartCommand(nonExistentCartId);
+
+        doThrow(new CartDoesNotExist(CartId.create(nonExistentCartId))).when(deleteCart).execute(command);
+
+        mockMvc.perform(delete("/cart/{id}", nonExistentCartId))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", is(HttpStatus.NOT_FOUND.value())))
+                .andExpect(jsonPath("$.message", CoreMatchers.containsString("There is no cart with given ID")));
     }
 
     private AddItemRequest anAddItemRequestWithNonExistentItem() {
