@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-public final class ApiController {
+public final class StoreController {
 
     private CreateCart createCart;
     private AddItemToCart addItemToCart;
