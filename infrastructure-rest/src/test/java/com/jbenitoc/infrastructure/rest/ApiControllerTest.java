@@ -69,7 +69,7 @@ class ApiControllerTest {
 
     @Test
     void givenNonExistentProduct_whenAddToCart_thenAErrorIsRaisedAndProperResponseIsReturned() throws Exception {
-        AddItemRequest addItemRequest = anAddItemRequestWithUnexistentItem();
+        AddItemRequest addItemRequest = anAddItemRequestWithNonExistentItem();
         String cartId = aCartId();
         String requestPayload = jsonMapper.writeValueAsString(addItemRequest);
         AddItemToCartCommand command = new AddItemToCartCommand(cartId, addItemRequest.itemCode, addItemRequest.quantity);
@@ -82,7 +82,7 @@ class ApiControllerTest {
                 .andExpect(jsonPath("$.message", CoreMatchers.containsString("There is no item with given code")));
     }
 
-    private AddItemRequest anAddItemRequestWithUnexistentItem() {
+    private AddItemRequest anAddItemRequestWithNonExistentItem() {
         return new AddItemRequest("WRONG", 1);
     }
 
