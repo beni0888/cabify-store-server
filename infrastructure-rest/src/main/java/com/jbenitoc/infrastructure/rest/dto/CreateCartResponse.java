@@ -6,10 +6,10 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public final class CartResponse {
+public final class CreateCartResponse {
     private final String id;
 
-    public static CartResponse fromCart(Cart cart) {
-        return new CartResponse(cart.getId().getValue().toString());
+    public static CreateCartResponse fromCart(Cart cart) {
+        return new CreateCartResponse(cart.getId().getValue().toString());
     }
 }

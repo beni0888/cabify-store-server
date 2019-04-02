@@ -7,7 +7,7 @@ import com.jbenitoc.application.store.delete.DeleteCart;
 import com.jbenitoc.application.store.delete.DeleteCartCommand;
 import com.jbenitoc.domain.store.Cart;
 import com.jbenitoc.infrastructure.rest.dto.AddItemRequest;
-import com.jbenitoc.infrastructure.rest.dto.CartResponse;
+import com.jbenitoc.infrastructure.rest.dto.CreateCartResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +22,9 @@ public final class ApiController {
 
     @PostMapping(path = "/cart")
     @ResponseStatus(HttpStatus.CREATED)
-    public CartResponse createCart() {
+    public CreateCartResponse createCart() {
         Cart cart = createCart.execute();
-        return CartResponse.fromCart(cart);
+        return CreateCartResponse.fromCart(cart);
     }
 
     @PostMapping(path = "/cart/{cartId}/item")
