@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CabifyServerApplication {
+public class CabifyStoreApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CabifyServerApplication.class, args);
+        SpringApplication.run(CabifyStoreApplication.class, args);
     }
 
 }
