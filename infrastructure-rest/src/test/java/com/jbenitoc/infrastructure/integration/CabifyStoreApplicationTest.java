@@ -66,7 +66,7 @@ public class CabifyStoreApplicationTest {
         cartRepository.save(cart);
         cart.addEntry(itemRepository.findByCode(ItemCode.create("VOUCHER")).orElseThrow(RuntimeException::new), ItemQuantity.create(2));
         cart.addEntry(itemRepository.findByCode(ItemCode.create("TSHIRT")).orElseThrow(RuntimeException::new), ItemQuantity.create(1));
-        Price expectedTotal = Price.create(BigDecimal.valueOf(30.0));
+        Price expectedTotal = Price.create(BigDecimal.valueOf(25.0)); // Discount 2x1 VOUCHER
 
         MvcResult result = mockMvc.perform(get("/cart/{id}", cart.getId()))
                 .andExpect(status().isOk())

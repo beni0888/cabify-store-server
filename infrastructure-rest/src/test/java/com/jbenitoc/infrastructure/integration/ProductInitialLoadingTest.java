@@ -1,5 +1,6 @@
 package com.jbenitoc.infrastructure.integration;
 
+import com.jbenitoc.domain.store.DiscountRepository;
 import com.jbenitoc.domain.store.ItemCode;
 import com.jbenitoc.domain.store.ItemRepository;
 import com.jbenitoc.infrastructure.configuration.ProductsConfiguration;
@@ -22,9 +23,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ProductInitialLoadingTest {
 
     @Autowired
-    ProductsConfiguration productsConfiguration;
+    private ProductsConfiguration productsConfiguration;
     @Autowired
-    ItemRepository itemRepository;
+    private ItemRepository itemRepository;
+    @Autowired
+    private DiscountRepository discountRepository;
 
     @Test
     void givenApplicationConfiguration_whenApplicationStarts_thenProductsAreLoaded() {
@@ -35,5 +38,10 @@ class ProductInitialLoadingTest {
     void givenApplicationConfiguration_whenApplicationStarts_thenProductsAreSavedInItemRepository() {
         assertThat(itemRepository.findByCode(ItemCode.create("VOUCHER"))).isNotEmpty();
         assertThat(itemRepository.findByCode(ItemCode.create("TSHIRT"))).isNotEmpty();
+    }
+
+    @Test
+    void whenApplicationStarts_thenDiscountsAreSavedInTheRepository() {
+        assertThat(discountRepository.findAll()).hasSize(2);
     }
 }
