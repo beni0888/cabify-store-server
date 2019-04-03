@@ -16,8 +16,8 @@ public final class ItemPrice extends ValueObject<BigDecimal> {
     }
 
     private static void assertValid(BigDecimal price) {
-        if (price == null || isZero(price)) {
-            throw ItemPriceIsNotValid.createForNullOrZero();
+        if (price == null) {
+            throw ItemPriceIsNotValid.createForNull();
         }
         if (isNegative(price)) {
             throw ItemPriceIsNotValid.createForNegative(price);

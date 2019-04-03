@@ -8,8 +8,8 @@ public final class ItemPriceIsNotValid extends IllegalArgumentException {
         super(s);
     }
 
-    public static ItemPriceIsNotValid createForNullOrZero() {
-        return new ItemPriceIsNotValid("Item price is not valid, it cannot be null or zero");
+    public static ItemPriceIsNotValid createForNull() {
+        return new ItemPriceIsNotValid("Item price is not valid, it cannot be null");
     }
 
     public static ItemPriceIsNotValid createForNegative(BigDecimal price) {
