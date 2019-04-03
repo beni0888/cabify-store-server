@@ -9,13 +9,13 @@ public class PriceCalculator {
 
     private ItemRepository itemRepository;
 
-    public CartTotalAmount calculateTotalAmount(Cart cart) {
+    public Price calculateTotalAmount(Cart cart) {
         BigDecimal total = BigDecimal.ZERO;
 
         for (CartEntry entry: cart.getEntries().values()) {
             total = total.add(calculateEntryAmount(entry));
         }
-        return CartTotalAmount.create(total);
+        return Price.create(total);
     }
 
     private BigDecimal calculateEntryAmount(CartEntry entry) {

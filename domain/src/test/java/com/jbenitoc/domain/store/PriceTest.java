@@ -12,13 +12,13 @@ class PriceTest {
     @Test
     void giveNullPrice_whenCreate_thenItThrowsAnException() {
         Exception e = assertThrows(ItemPriceIsNotValid.class, () -> Price.create(null));
-        assertThat(e.getMessage()).isEqualTo("Item price is not valid, it cannot be null or zero");
+        assertThat(e.getMessage()).isEqualTo("Price is not valid, it cannot be null");
     }
 
     @Test
     void givenNegativePrice_whenCreate_thenItThrowsAnException() {
         Exception e = assertThrows(ItemPriceIsNotValid.class, () -> Price.create(BigDecimal.valueOf(-1.0d)));
-        assertThat(e.getMessage()).isEqualTo("Item price [-1.000000] is not valid, it cannot be negative");
+        assertThat(e.getMessage()).isEqualTo("Price [-1.000000] is not valid, it cannot be negative");
     }
 
     @Test

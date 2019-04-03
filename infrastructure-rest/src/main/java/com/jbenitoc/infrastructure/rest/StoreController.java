@@ -8,7 +8,7 @@ import com.jbenitoc.application.store.delete.DeleteCartCommand;
 import com.jbenitoc.application.store.total.GetCartTotalAmount;
 import com.jbenitoc.application.store.total.GetCartTotalAmountQuery;
 import com.jbenitoc.domain.store.Cart;
-import com.jbenitoc.domain.store.CartTotalAmount;
+import com.jbenitoc.domain.store.Price;
 import com.jbenitoc.infrastructure.rest.dto.AddItemRequest;
 import com.jbenitoc.infrastructure.rest.dto.CreateCartResponse;
 import com.jbenitoc.infrastructure.rest.dto.GetCartTotalAmountResponse;
@@ -50,7 +50,7 @@ public final class StoreController {
     @ResponseBody
     public GetCartTotalAmountResponse getCartTotalAmount(@PathVariable String cartId) {
         GetCartTotalAmountQuery query = new GetCartTotalAmountQuery(cartId);
-        CartTotalAmount totalAmount = getCartTotalAmount.execute(query);
+        Price totalAmount = getCartTotalAmount.execute(query);
         return new GetCartTotalAmountResponse(cartId, totalAmount.getValue());
     }
 

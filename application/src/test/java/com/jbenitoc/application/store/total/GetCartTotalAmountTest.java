@@ -28,13 +28,13 @@ class GetCartTotalAmountTest {
     @Test
     void givenAQuery_whenExecute_thenItReturnsTheCartTotalAmount() {
         Cart cart = Cart.create(CartId.create());
-        CartTotalAmount expectedTotal = CartTotalAmount.create(BigDecimal.TEN);
+        Price expectedTotal = Price.create(BigDecimal.TEN);
 
         when(cartRepository.findById(cart.getId())).thenReturn(Optional.of(cart));
         when(priceCalculator.calculateTotalAmount(cart)).thenReturn(expectedTotal);
 
         GetCartTotalAmountQuery query = new GetCartTotalAmountQuery(cart.getId().toString());
-        CartTotalAmount totalAmount = getCartTotalAmount.execute(query);
+        Price totalAmount = getCartTotalAmount.execute(query);
 
         assertThat(totalAmount).isEqualTo(expectedTotal);
     }

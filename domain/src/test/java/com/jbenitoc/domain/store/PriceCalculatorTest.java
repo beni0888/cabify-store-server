@@ -40,9 +40,9 @@ class PriceCalculatorTest {
         Cart cart = mock(Cart.class);
         when(cart.getEntries()).thenReturn(someEntries(anEntry(ITEM_1, 1), anEntry(ITEM_2, 2)));
 
-        CartTotalAmount total = priceCalculator.calculateTotalAmount(cart);
+        Price total = priceCalculator.calculateTotalAmount(cart);
 
-        assertThat(total).isEqualTo(CartTotalAmount.create(BigDecimal.valueOf(26)));
+        assertThat(total).isEqualTo(Price.create(BigDecimal.valueOf(26)));
     }
 
     @Test
@@ -50,9 +50,9 @@ class PriceCalculatorTest {
         Cart cart = mock(Cart.class);
         when(cart.getEntries()).thenReturn(emptyMap());
 
-        CartTotalAmount total = priceCalculator.calculateTotalAmount(cart);
+        Price total = priceCalculator.calculateTotalAmount(cart);
 
-        assertThat(total).isEqualTo(CartTotalAmount.create(BigDecimal.ZERO));
+        assertThat(total).isEqualTo(Price.create(BigDecimal.ZERO));
     }
 
     private CartEntry anEntry(Item item, int quantity) {

@@ -9,7 +9,7 @@ public class GetCartTotalAmount {
     private CartRepository cartRepository;
     private PriceCalculator priceCalculator;
 
-    public CartTotalAmount execute(GetCartTotalAmountQuery query) {
+    public Price execute(GetCartTotalAmountQuery query) {
         CartId cartId = CartId.create(query.cartId);
         Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartDoesNotExist(cartId));
 

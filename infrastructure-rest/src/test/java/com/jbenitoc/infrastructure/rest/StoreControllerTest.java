@@ -117,7 +117,7 @@ class StoreControllerTest {
     @Test
     void giveCartId_whenGetTotalAmount_thenItReturnsTheTotalAmountForTheCart() throws Exception {
         String cartId = aCartId();
-        CartTotalAmount total = CartTotalAmount.create(BigDecimal.TEN);
+        Price total = Price.create(BigDecimal.TEN);
         GetCartTotalAmountQuery query = new GetCartTotalAmountQuery(cartId);
 
         when(getCartTotalAmount.execute(query)).thenReturn(total);

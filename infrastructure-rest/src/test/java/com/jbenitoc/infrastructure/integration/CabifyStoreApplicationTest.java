@@ -66,14 +66,14 @@ public class CabifyStoreApplicationTest {
         cartRepository.save(cart);
         cart.addEntry(itemRepository.findByCode(ItemCode.create("VOUCHER")).orElseThrow(RuntimeException::new), ItemQuantity.create(2));
         cart.addEntry(itemRepository.findByCode(ItemCode.create("TSHIRT")).orElseThrow(RuntimeException::new), ItemQuantity.create(1));
-        CartTotalAmount expectedTotal = CartTotalAmount.create(BigDecimal.valueOf(30.0));
+        Price expectedTotal = Price.create(BigDecimal.valueOf(30.0));
 
         MvcResult result = mockMvc.perform(get("/cart/{id}", cart.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.cartId", is(cart.getId().toString())))
                 .andReturn();
 
-        CartTotalAmount obtainedTotal = CartTotalAmount.create(BigDecimal
+        Price obtainedTotal = Price.create(BigDecimal
                 .valueOf(jsonMapper.readTree(result.getResponse().getContentAsString()).get("totalAmount").asDouble()));
         assertThat(expectedTotal).isEqualTo(obtainedTotal);
     }
