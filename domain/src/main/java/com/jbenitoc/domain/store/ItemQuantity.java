@@ -4,6 +4,8 @@ import com.jbenitoc.domain.ValueObject;
 
 public final class ItemQuantity extends ValueObject<Integer> {
 
+    public static final ItemQuantity ONE = ItemQuantity.create(1);
+
     private ItemQuantity(Integer quantity) {
         super(quantity);
     }
@@ -21,5 +23,9 @@ public final class ItemQuantity extends ValueObject<Integer> {
 
     public ItemQuantity sum(ItemQuantity quantity) {
         return ItemQuantity.create(this.value + quantity.value);
+    }
+
+    public boolean higherThan(ItemQuantity quantity) {
+        return this.value > quantity.value;
     }
 }

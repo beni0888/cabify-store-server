@@ -28,6 +28,9 @@ public class PriceCalculator {
     }
 
     private BigDecimal getItemPrice(CartEntry entry) {
-        return itemRepository.findByCode(entry.getItemCode()).map(Item::getPrice).orElseThrow(RuntimeException::new).getValue();
+        return itemRepository.findByCode(entry.getItemCode())
+                .map(Item::getPrice)
+                .orElseThrow(RuntimeException::new)
+                .getValue();
     }
 }
