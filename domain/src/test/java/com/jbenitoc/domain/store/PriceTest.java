@@ -7,17 +7,17 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ItemPriceTest {
+class PriceTest {
 
     @Test
     void giveNullPrice_whenCreate_thenItThrowsAnException() {
-        Exception e = assertThrows(ItemPriceIsNotValid.class, () -> ItemPrice.create(null));
+        Exception e = assertThrows(ItemPriceIsNotValid.class, () -> Price.create(null));
         assertThat(e.getMessage()).isEqualTo("Item price is not valid, it cannot be null or zero");
     }
 
     @Test
     void givenNegativePrice_whenCreate_thenItThrowsAnException() {
-        Exception e = assertThrows(ItemPriceIsNotValid.class, () -> ItemPrice.create(BigDecimal.valueOf(-1.0d)));
+        Exception e = assertThrows(ItemPriceIsNotValid.class, () -> Price.create(BigDecimal.valueOf(-1.0d)));
         assertThat(e.getMessage()).isEqualTo("Item price [-1.000000] is not valid, it cannot be negative");
     }
 
@@ -25,7 +25,7 @@ class ItemPriceTest {
     void givenValidPrice_whenCreate_thenItWorks() {
         BigDecimal price = BigDecimal.valueOf(10.5);
 
-        ItemPrice itemPrice = ItemPrice.create(price);
+        Price itemPrice = Price.create(price);
 
         assertThat(itemPrice.getValue()).isEqualTo(price);
     }

@@ -15,9 +15,9 @@ public class BuyTwoGetOneFree implements Discount {
     }
 
     @Override
-    public ItemPrice getAmount(CartEntry entry, ItemPrice itemPrice) {
+    public Price getAmount(CartEntry entry, Price price) {
         int chunks = entry.getQuantity().getValue() / 2;
         int rest = entry.getQuantity().getValue() % 2;
-        return itemPrice.multiply(chunks).add(itemPrice.multiply(rest));
+        return price.multiply(chunks).add(price.multiply(rest));
     }
 }

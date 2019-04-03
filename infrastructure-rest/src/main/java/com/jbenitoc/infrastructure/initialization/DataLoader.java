@@ -20,7 +20,7 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         productsConfiguration.getProducts().forEach(product -> {
-            Item item = Item.create(ItemCode.create(product.getCode()), ItemName.create(product.getName()), ItemPrice.create(product.getPrice()));
+            Item item = Item.create(ItemCode.create(product.getCode()), ItemName.create(product.getName()), Price.create(product.getPrice()));
             itemRepository.save(item);
         });
     }

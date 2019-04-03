@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BuyTwoGetOneFreeTest {
 
     private static final ItemCode ITEM_CODE = ItemCode.create("ITEM");
-    private static final ItemPrice PRICE = ItemPrice.create(BigDecimal.ONE);
+    private static final Price PRICE = Price.create(BigDecimal.ONE);
 
     private BuyTwoGetOneFree discount = new BuyTwoGetOneFree(ITEM_CODE);
 
@@ -36,8 +36,8 @@ class BuyTwoGetOneFreeTest {
 
     @ParameterizedTest
     @MethodSource("getAmountProvider")
-    void givenACartEntryAndItemPrice_whenGetAmount_thenItReturnsTheTotalAmountForTheEntry(CartEntry entry, ItemPrice price, ItemPrice expectedAmount) {
-        ItemPrice amount = discount.getAmount(entry, price);
+    void givenACartEntryAndItemPrice_whenGetAmount_thenItReturnsTheTotalAmountForTheEntry(CartEntry entry, Price price, Price expectedAmount) {
+        Price amount = discount.getAmount(entry, price);
 
         assertThat(amount).isEqualTo(expectedAmount);
     }
@@ -46,8 +46,8 @@ class BuyTwoGetOneFreeTest {
         return Stream.of(
                 Arguments.of(CartEntry.create(ITEM_CODE, ONE), PRICE, PRICE),
                 Arguments.of(CartEntry.create(ITEM_CODE, ItemQuantity.create(2)), PRICE, PRICE),
-                Arguments.of(CartEntry.create(ITEM_CODE, ItemQuantity.create(3)), PRICE, ItemPrice.create(BigDecimal.valueOf(2))),
-                Arguments.of(CartEntry.create(ITEM_CODE, ItemQuantity.create(3)), ItemPrice.create(BigDecimal.valueOf(1.5)), ItemPrice.create(BigDecimal.valueOf(3)))
+                Arguments.of(CartEntry.create(ITEM_CODE, ItemQuantity.create(3)), PRICE, Price.create(BigDecimal.valueOf(2))),
+                Arguments.of(CartEntry.create(ITEM_CODE, ItemQuantity.create(3)), Price.create(BigDecimal.valueOf(1.5)), Price.create(BigDecimal.valueOf(3)))
         );
     }
 }

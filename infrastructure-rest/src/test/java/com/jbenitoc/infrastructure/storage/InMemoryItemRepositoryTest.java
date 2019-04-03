@@ -14,7 +14,7 @@ class InMemoryItemRepositoryTest {
 
     @Test
     void givenAnItem_whenSave_thenItIsStoredInTheRepository() {
-        Item item = Item.create(ItemCode.create("TSHIRT"), ItemName.create("Cabify T-Shirt"), ItemPrice.create(BigDecimal.ONE));
+        Item item = Item.create(ItemCode.create("TSHIRT"), ItemName.create("Cabify T-Shirt"), Price.create(BigDecimal.ONE));
 
         itemRepository.save(item);
         Optional<Item> retrievedItem = itemRepository.findByCode(item.getCode());

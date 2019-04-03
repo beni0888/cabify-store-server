@@ -4,15 +4,15 @@ import com.jbenitoc.domain.ValueObject;
 
 import java.math.BigDecimal;
 
-public final class ItemPrice extends ValueObject<BigDecimal> {
+public final class Price extends ValueObject<BigDecimal> {
 
-    private ItemPrice(BigDecimal price) {
+    private Price(BigDecimal price) {
         super(price);
     }
 
-    public static ItemPrice create(BigDecimal price) {
+    public static Price create(BigDecimal price) {
         assertValid(price);
-        return new ItemPrice(price);
+        return new Price(price);
     }
 
     private static void assertValid(BigDecimal price) {
@@ -28,19 +28,19 @@ public final class ItemPrice extends ValueObject<BigDecimal> {
         return (price.compareTo(BigDecimal.ZERO) < 0);
     }
 
-    public ItemPrice multiply(int factor) {
-        return ItemPrice.create(value.multiply(BigDecimal.valueOf(factor)));
+    public Price multiply(int factor) {
+        return Price.create(value.multiply(BigDecimal.valueOf(factor)));
     }
 
-    public ItemPrice add(ItemPrice amount) {
-        return ItemPrice.create(value.add(amount.value));
+    public Price add(Price amount) {
+        return Price.create(value.add(amount.value));
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ItemPrice itemPrice = (ItemPrice) o;
-        return value.compareTo(itemPrice.value) == 0;
+        Price price = (Price) o;
+        return value.compareTo(price.value) == 0;
     }
 }

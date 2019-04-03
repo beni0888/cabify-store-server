@@ -4,5 +4,5 @@ public interface Discount {
 
     boolean isApplicable(CartEntry entry);
 
-    ItemPrice getAmount(CartEntry entry, ItemPrice itemPrice);
+    Price getAmount(CartEntry entry, Price price);
 }

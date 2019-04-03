@@ -9,10 +9,10 @@ public final class ItemPriceIsNotValid extends IllegalArgumentException {
     }
 
     public static ItemPriceIsNotValid createForNull() {
-        return new ItemPriceIsNotValid("Item price is not valid, it cannot be null");
+        return new ItemPriceIsNotValid("Price is not valid, it cannot be null");
     }
 
     public static ItemPriceIsNotValid createForNegative(BigDecimal price) {
-        return new ItemPriceIsNotValid(String.format("Item price [%f] is not valid, it cannot be negative", price.floatValue()));
+        return new ItemPriceIsNotValid(String.format("Price [%f] is not valid, it cannot be negative", price.floatValue()));
     }
 }

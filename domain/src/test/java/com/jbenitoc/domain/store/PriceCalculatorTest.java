@@ -16,8 +16,8 @@ import static org.mockito.Mockito.when;
 
 class PriceCalculatorTest {
 
-    private static final Item ITEM_1 = Item.create(ItemCode.create("ITEM-1"), ItemName.create("ITEM 1"), ItemPrice.create(BigDecimal.valueOf(5)));
-    private static final Item ITEM_2 = Item.create(ItemCode.create("ITEM-2"), ItemName.create("ITEM 2"), ItemPrice.create(BigDecimal.valueOf(10.5)));
+    private static final Item ITEM_1 = Item.create(ItemCode.create("ITEM-1"), ItemName.create("ITEM 1"), Price.create(BigDecimal.valueOf(5)));
+    private static final Item ITEM_2 = Item.create(ItemCode.create("ITEM-2"), ItemName.create("ITEM 2"), Price.create(BigDecimal.valueOf(10.5)));
 
     private PriceCalculator priceCalculator;
     private ItemRepository itemRepository;

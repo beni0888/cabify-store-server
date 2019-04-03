@@ -72,7 +72,7 @@ class AddItemToCartTest {
     }
 
     private Item anItem(ItemCode code) {
-        return Item.create(code, ItemName.create("Whatever"), ItemPrice.create(BigDecimal.ONE));
+        return Item.create(code, ItemName.create("Whatever"), Price.create(BigDecimal.ONE));
     }
 
     private Cart aCartMock() {

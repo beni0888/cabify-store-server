@@ -10,6 +10,6 @@ import lombok.Getter;
 public final class Item {
     private final ItemCode code;
     private final ItemName name;
-    private final ItemPrice price;
+    private final Price price;
 
 }

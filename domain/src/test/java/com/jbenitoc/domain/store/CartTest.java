@@ -48,6 +48,6 @@ class CartTest {
     }
 
     private Item anItem(String code, String name, BigDecimal price) {
-        return Item.create(ItemCode.create(code), ItemName.create(name), ItemPrice.create(price));
+        return Item.create(ItemCode.create(code), ItemName.create(name), Price.create(price));
     }
 }
