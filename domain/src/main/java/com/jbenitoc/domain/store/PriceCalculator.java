@@ -3,34 +3,35 @@ package com.jbenitoc.domain.store;
 import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class PriceCalculator {
 
     private ItemRepository itemRepository;
+    private DiscountRepository discountRepository;
 
     public Price calculateTotalAmount(Cart cart) {
-        BigDecimal total = BigDecimal.ZERO;
+        Price total = Price.create(BigDecimal.ZERO);
 
         for (CartEntry entry: cart.getEntries().values()) {
             total = total.add(calculateEntryAmount(entry));
         }
-        return Price.create(total);
+        return total;
     }
 
-    private BigDecimal calculateEntryAmount(CartEntry entry) {
-        BigDecimal itemPrice = getItemPrice(entry);
-        return itemPrice.multiply(getItemQuantity(entry));
+    private Price calculateEntryAmount(CartEntry entry) {
+        Price itemPrice = getItemPrice(entry);
+        Optional<Discount> discount = discountRepository.findAll().stream()
+                .filter(disc -> disc.isApplicable(entry)).findFirst();
+
+        return discount.map(discount1 -> discount1.getAmount(entry, itemPrice))
+                .orElse(itemPrice.multiply(entry.getQuantity().toInteger()));
     }
 
-    private BigDecimal getItemQuantity(CartEntry entry) {
-        return BigDecimal.valueOf(entry.getQuantity().getValue());
-    }
-
-    private BigDecimal getItemPrice(CartEntry entry) {
+    private Price getItemPrice(CartEntry entry) {
         return itemRepository.findByCode(entry.getItemCode())
                 .map(Item::getPrice)
-                .orElseThrow(RuntimeException::new)
-                .getValue();
+                .orElseThrow(RuntimeException::new);
     }
 }

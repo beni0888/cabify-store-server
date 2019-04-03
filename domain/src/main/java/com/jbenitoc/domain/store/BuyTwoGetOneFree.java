@@ -1,10 +1,12 @@
 package com.jbenitoc.domain.store;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 import static com.jbenitoc.domain.store.ItemQuantity.ONE;
 
 @AllArgsConstructor
+@EqualsAndHashCode
 public class BuyTwoGetOneFree implements Discount {
 
     private ItemCode itemCode;
@@ -16,8 +18,8 @@ public class BuyTwoGetOneFree implements Discount {
 
     @Override
     public Price getAmount(CartEntry entry, Price price) {
-        ItemQuantity numberOfPacks = ItemQuantity.create(entry.getQuantity().getValue() / 2);
-        ItemQuantity rest = ItemQuantity.create(entry.getQuantity().getValue() % 2);
+        Integer numberOfPacks = entry.getQuantity().getValue() / 2;
+        Integer rest = entry.getQuantity().getValue() % 2;
         return price.multiply(numberOfPacks).add(price.multiply(rest));
     }
 }

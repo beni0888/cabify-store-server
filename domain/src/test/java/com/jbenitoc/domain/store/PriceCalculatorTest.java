@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -21,11 +22,13 @@ class PriceCalculatorTest {
 
     private PriceCalculator priceCalculator;
     private ItemRepository itemRepository;
+    private DiscountRepository discountRepository;
 
     @BeforeEach
     void setUp() {
         itemRepository = mock(ItemRepository.class);
-        priceCalculator = new PriceCalculator(itemRepository);
+        discountRepository = mock(DiscountRepository.class);
+        priceCalculator = new PriceCalculator(itemRepository, discountRepository);
 
         setUpItemRepositoryMock();
     }
@@ -53,6 +56,28 @@ class PriceCalculatorTest {
         Price total = priceCalculator.calculateTotalAmount(cart);
 
         assertThat(total).isEqualTo(Price.create(BigDecimal.ZERO));
+    }
+
+    @Test
+    void givenACartWithApplicableDiscounts_whenCalculateTotalAmount_thenDiscountsAreAppliedAndItReturnsTheCorrespondingTotalAmount() {
+        Cart cart = mock(Cart.class);
+
+        when(discountRepository.findAll()).thenReturn(asList(
+                new BuyTwoGetOneFree(ITEM_1.getCode()),
+                new BulkPurchaseDiscount(ITEM_2.getCode(), ItemQuantity.create(3), Price.create(BigDecimal.ONE))
+        ));
+        when(cart.getEntries()).thenReturn(someEntries(
+                anEntry(ITEM_1, 2),
+                anEntry(ITEM_2, 3)
+        ));
+
+        Price total = priceCalculator.calculateTotalAmount(cart);
+
+        // Price should be
+        // - ITEM_1: 5 (BuyTwoGetOneFree)
+        // - ITEM_2: 3 (BulkPurchaseDiscount - price: 1 per unit)
+        // - TOTAL:  8
+        assertThat(total).isEqualTo(Price.create(BigDecimal.valueOf(8)));
     }
 
     private CartEntry anEntry(Item item, int quantity) {

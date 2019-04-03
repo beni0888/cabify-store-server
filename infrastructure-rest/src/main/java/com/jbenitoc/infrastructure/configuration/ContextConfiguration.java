@@ -5,6 +5,7 @@ import com.jbenitoc.application.store.create.CreateCart;
 import com.jbenitoc.application.store.delete.DeleteCart;
 import com.jbenitoc.application.store.total.GetCartTotalAmount;
 import com.jbenitoc.domain.store.CartRepository;
+import com.jbenitoc.domain.store.DiscountRepository;
 import com.jbenitoc.domain.store.ItemRepository;
 import com.jbenitoc.domain.store.PriceCalculator;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +35,7 @@ public class ContextConfiguration {
     }
 
     @Bean
-    public PriceCalculator priceCalculator(ItemRepository itemRepository) {
-        return new PriceCalculator(itemRepository);
+    public PriceCalculator priceCalculator(ItemRepository itemRepository, DiscountRepository discountRepository) {
+        return new PriceCalculator(itemRepository, discountRepository);
     }
 }
