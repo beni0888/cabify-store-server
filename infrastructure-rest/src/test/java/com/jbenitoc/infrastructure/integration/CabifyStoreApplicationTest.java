@@ -3,6 +3,9 @@ package com.jbenitoc.infrastructure.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jbenitoc.domain.store.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +14,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Stream;
 
+import static com.jbenitoc.domain.store.ItemQuantity.ONE;
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -26,7 +33,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "cabify.store.products[0].price=5.00",
         "cabify.store.products[1].code=TSHIRT",
         "cabify.store.products[1].name=Cabify T-Shirt",
-        "cabify.store.products[1].price=20.00"
+        "cabify.store.products[1].price=20.00",
+        "cabify.store.products[2].code=MUG",
+        "cabify.store.products[2].name=Cabify Cofee Mug",
+        "cabify.store.products[2].price=7.50"
 })
 public class CabifyStoreApplicationTest {
 
@@ -60,13 +70,15 @@ public class CabifyStoreApplicationTest {
         assertThat(cartRepository.findById(cart.getId())).isEmpty();
     }
 
-    @Test
-    void whenGetCartTotalAmount_thenItWorks() throws Exception {
+    @ParameterizedTest
+    @MethodSource("providerWithCabifyExpectations")
+    void whenGetCartTotalAmount_thenItWorks(List<String> itemCodes, Price expectedTotal) throws Exception {
         Cart cart = Cart.create(CartId.create());
         cartRepository.save(cart);
-        cart.addEntry(itemRepository.findByCode(ItemCode.create("VOUCHER")).orElseThrow(RuntimeException::new), ItemQuantity.create(2));
-        cart.addEntry(itemRepository.findByCode(ItemCode.create("TSHIRT")).orElseThrow(RuntimeException::new), ItemQuantity.create(1));
-        Price expectedTotal = Price.create(BigDecimal.valueOf(25.0)); // Discount 2x1 VOUCHER
+
+        itemCodes.forEach(itemCode -> {
+            cart.addEntry(itemRepository.findByCode(ItemCode.create(itemCode)).orElseThrow(RuntimeException::new), ONE);
+        });
 
         MvcResult result = mockMvc.perform(get("/cart/{id}", cart.getId()))
                 .andExpect(status().isOk())
@@ -75,6 +87,19 @@ public class CabifyStoreApplicationTest {
 
         Price obtainedTotal = Price.create(BigDecimal
                 .valueOf(jsonMapper.readTree(result.getResponse().getContentAsString()).get("totalAmount").asDouble()));
-        assertThat(expectedTotal).isEqualTo(obtainedTotal);
+        assertThat(obtainedTotal).isEqualTo(expectedTotal);
+    }
+
+    private static Stream providerWithCabifyExpectations() {
+        return Stream.of(
+                Arguments.of(asList("VOUCHER", "TSHIRT", "MUG"), price(32.50)),
+                Arguments.of(asList("VOUCHER", "TSHIRT", "VOUCHER"), price(25.00)),
+                Arguments.of(asList("TSHIRT", "TSHIRT", "TSHIRT", "VOUCHER", "TSHIRT"), price(81.00)),
+                Arguments.of(asList("VOUCHER", "TSHIRT", "VOUCHER", "VOUCHER", "MUG", "TSHIRT", "TSHIRT"), price(74.50))
+        );
+    }
+
+    private static Price price(double value) {
+        return Price.create(BigDecimal.valueOf(value));
     }
 }
