@@ -28,4 +28,8 @@ public final class ItemQuantity extends ValueObject<Integer> {
     public boolean higherThan(ItemQuantity quantity) {
         return this.value > quantity.value;
     }
+
+    public boolean higherOrEqualThan(ItemQuantity quantity) {
+        return this.value >= quantity.value;
+    }
 }

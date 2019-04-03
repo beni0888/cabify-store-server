@@ -28,8 +28,8 @@ public final class Price extends ValueObject<BigDecimal> {
         return (price.compareTo(BigDecimal.ZERO) < 0);
     }
 
-    public Price multiply(int factor) {
-        return Price.create(value.multiply(BigDecimal.valueOf(factor)));
+    public Price multiply(ItemQuantity factor) {
+        return Price.create(value.multiply(BigDecimal.valueOf(factor.getValue())));
     }
 
     public Price add(Price amount) {
