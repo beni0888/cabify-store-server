@@ -3,8 +3,6 @@ package com.jbenitoc.application.store.add;
 import com.jbenitoc.domain.store.*;
 import lombok.AllArgsConstructor;
 
-import java.util.UUID;
-
 @AllArgsConstructor
 public class AddItemToCart {
 

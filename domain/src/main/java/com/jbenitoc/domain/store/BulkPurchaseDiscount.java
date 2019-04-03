@@ -22,4 +22,9 @@ public class BulkPurchaseDiscount implements Discount {
         }
         return price.multiply(entry.getQuantity().toInteger());
     }
+
+    @Override
+    public String getDiscountCode() {
+        return String.format("BULK_PURCHASE_%s_MIN_%s", itemCode, minimumQuantity);
+    }
 }

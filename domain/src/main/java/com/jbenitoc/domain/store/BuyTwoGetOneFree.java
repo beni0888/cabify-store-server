@@ -22,4 +22,9 @@ public class BuyTwoGetOneFree implements Discount {
         Integer rest = entry.getQuantity().getValue() % 2;
         return price.multiply(numberOfPacks).add(price.multiply(rest));
     }
+
+    @Override
+    public String getDiscountCode() {
+        return String.format("BUY_2_GET_1_FREE - %s", itemCode);
+    }
 }
