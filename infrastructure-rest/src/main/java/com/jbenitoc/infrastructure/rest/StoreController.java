@@ -5,9 +5,13 @@ import com.jbenitoc.application.store.add.AddItemToCartCommand;
 import com.jbenitoc.application.store.create.CreateCart;
 import com.jbenitoc.application.store.delete.DeleteCart;
 import com.jbenitoc.application.store.delete.DeleteCartCommand;
+import com.jbenitoc.application.store.total.GetCartTotalAmount;
+import com.jbenitoc.application.store.total.GetCartTotalAmountQuery;
 import com.jbenitoc.domain.store.Cart;
+import com.jbenitoc.domain.store.CartTotalAmount;
 import com.jbenitoc.infrastructure.rest.dto.AddItemRequest;
 import com.jbenitoc.infrastructure.rest.dto.CreateCartResponse;
+import com.jbenitoc.infrastructure.rest.dto.GetCartTotalAmountResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +23,7 @@ public final class StoreController {
     private CreateCart createCart;
     private AddItemToCart addItemToCart;
     private DeleteCart deleteCart;
+    private GetCartTotalAmount getCartTotalAmount;
 
     @PostMapping(path = "/cart")
     @ResponseStatus(HttpStatus.CREATED)
@@ -38,6 +43,15 @@ public final class StoreController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCart(@PathVariable String cartId) {
         deleteCart.execute(new DeleteCartCommand(cartId));
+    }
+
+    @GetMapping(path = "/cart/{cartId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GetCartTotalAmountResponse getCartTotalAmount(@PathVariable String cartId) {
+        GetCartTotalAmountQuery query = new GetCartTotalAmountQuery(cartId);
+        CartTotalAmount totalAmount = getCartTotalAmount.execute(query);
+        return new GetCartTotalAmountResponse(cartId, totalAmount.getValue());
     }
 
 }

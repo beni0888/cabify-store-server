@@ -6,22 +6,28 @@ import com.jbenitoc.application.store.add.AddItemToCartCommand;
 import com.jbenitoc.application.store.create.CreateCart;
 import com.jbenitoc.application.store.delete.DeleteCart;
 import com.jbenitoc.application.store.delete.DeleteCartCommand;
+import com.jbenitoc.application.store.total.GetCartTotalAmount;
+import com.jbenitoc.application.store.total.GetCartTotalAmountQuery;
 import com.jbenitoc.domain.store.*;
 import com.jbenitoc.infrastructure.rest.dto.AddItemRequest;
-import org.hamcrest.CoreMatchers;
+import com.jbenitoc.infrastructure.rest.dto.GetCartTotalAmountResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import java.math.BigDecimal;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,6 +44,8 @@ class StoreControllerTest {
     private AddItemToCart addItemToCart;
     @MockBean
     private DeleteCart deleteCart;
+    @MockBean
+    private GetCartTotalAmount getCartTotalAmount;
 
     @Test
     void givenCreateCartRequest_whenExecuted_thenACartIsCreatedAndReturned() throws Exception {
@@ -69,7 +77,7 @@ class StoreControllerTest {
         mockMvc.perform(post("/cart/{id}/item", nonExistentCartId).content(requestPayload).contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", is(HttpStatus.NOT_FOUND.value())))
-                .andExpect(jsonPath("$.message", CoreMatchers.containsString("There is no cart with given ID")));
+                .andExpect(jsonPath("$.message", containsString("There is no cart with given ID")));
     }
 
     @Test
@@ -84,7 +92,7 @@ class StoreControllerTest {
         mockMvc.perform(post("/cart/{id}/item", cartId).content(requestPayload).contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", is(HttpStatus.NOT_FOUND.value())))
-                .andExpect(jsonPath("$.message", CoreMatchers.containsString("There is no item with given code")));
+                .andExpect(jsonPath("$.message", containsString("There is no item with given code")));
     }
 
     @Test
@@ -103,7 +111,49 @@ class StoreControllerTest {
         mockMvc.perform(delete("/cart/{id}", nonExistentCartId))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", is(HttpStatus.NOT_FOUND.value())))
-                .andExpect(jsonPath("$.message", CoreMatchers.containsString("There is no cart with given ID")));
+                .andExpect(jsonPath("$.message", containsString("There is no cart with given ID")));
+    }
+
+    @Test
+    void giveCartId_whenGetTotalAmount_thenItReturnsTheTotalAmountForTheCart() throws Exception {
+        String cartId = aCartId();
+        CartTotalAmount total = CartTotalAmount.create(BigDecimal.TEN);
+        GetCartTotalAmountQuery query = new GetCartTotalAmountQuery(cartId);
+
+        when(getCartTotalAmount.execute(query)).thenReturn(total);
+
+        MvcResult result = mockMvc.perform(get("/cart/{id}", cartId))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        GetCartTotalAmountResponse expectedResponse = new GetCartTotalAmountResponse(cartId, total.getValue());
+        assertThat(result.getResponse().getContentAsString()).isEqualTo(jsonMapper.writeValueAsString(expectedResponse));
+    }
+
+    @Test
+    void giveNonExistentCartId_whenGetTotalAmount_thenAErrorIsRaisedAndProperResponseIsReturned() throws Exception {
+        String nonExistentCartId = aCartId();
+        GetCartTotalAmountQuery query = new GetCartTotalAmountQuery(nonExistentCartId);
+
+        doThrow(new CartDoesNotExist(CartId.create(nonExistentCartId))).when(getCartTotalAmount).execute(query);
+
+        mockMvc.perform(get("/cart/{id}", nonExistentCartId))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", is(HttpStatus.NOT_FOUND.value())))
+                .andExpect(jsonPath("$.message", containsString("There is no cart with given ID")));
+    }
+
+    @Test
+    void giveNonInvalidCartId_whenGetTotalAmount_thenAErrorIsRaisedAndProperResponseIsReturned() throws Exception {
+        String invalidCartId = aCartId();
+        GetCartTotalAmountQuery query = new GetCartTotalAmountQuery(invalidCartId);
+
+        doThrow(new CartIdIsNotValid(invalidCartId)).when(getCartTotalAmount).execute(query);
+
+        mockMvc.perform(get("/cart/{id}", invalidCartId))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+                .andExpect(jsonPath("$.message", is(String.format("Cart ID [%s] is not valid, it should be a valid UUID", invalidCartId))));
     }
 
     private AddItemRequest anAddItemRequestWithNonExistentItem() {

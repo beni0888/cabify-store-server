@@ -14,10 +14,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource(properties = {
         "cabify.store.products[0].code=VOUCHER",
         "cabify.store.products[0].name=Cabify Voucher",
-        "cabify.store.products[0].price=1.50",
+        "cabify.store.products[0].price=5.00",
         "cabify.store.products[1].code=TSHIRT",
         "cabify.store.products[1].name=Cabify T-Shirt",
-        "cabify.store.products[1].price=15.00"
+        "cabify.store.products[1].price=20.00"
 })
 class ProductInitialLoadingTest {
 

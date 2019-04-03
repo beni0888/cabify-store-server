@@ -18,7 +18,7 @@ public class Cart {
 
     public synchronized void addEntry(Item item, ItemQuantity quantity) {
         Optional<CartEntry> entry = getEntry(item.getCode());
-        ItemQuantity totalQuantity = entry.isPresent() ? quantity.sum(entry.get().getQuantity()) : quantity;
+        ItemQuantity totalQuantity = entry.map(cartEntry -> quantity.sum(cartEntry.getQuantity())).orElse(quantity);
         entries.put(item.getCode(), CartEntry.create(item.getCode(), totalQuantity));
     }
 

@@ -3,8 +3,10 @@ package com.jbenitoc.infrastructure.configuration;
 import com.jbenitoc.application.store.add.AddItemToCart;
 import com.jbenitoc.application.store.create.CreateCart;
 import com.jbenitoc.application.store.delete.DeleteCart;
+import com.jbenitoc.application.store.total.GetCartTotalAmount;
 import com.jbenitoc.domain.store.CartRepository;
 import com.jbenitoc.domain.store.ItemRepository;
+import com.jbenitoc.domain.store.PriceCalculator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,5 +26,15 @@ public class ContextConfiguration {
     @Bean
     public DeleteCart deleteCart(CartRepository cartRepository) {
         return new DeleteCart(cartRepository);
+    }
+
+    @Bean
+    public GetCartTotalAmount getCartTotalAmount(CartRepository cartRepository, PriceCalculator priceCalculator) {
+        return new GetCartTotalAmount(cartRepository, priceCalculator);
+    }
+
+    @Bean
+    public PriceCalculator priceCalculator(ItemRepository itemRepository) {
+        return new PriceCalculator(itemRepository);
     }
 }
