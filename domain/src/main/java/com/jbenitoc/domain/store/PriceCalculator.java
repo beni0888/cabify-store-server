@@ -16,7 +16,7 @@ public class PriceCalculator {
     public Price calculateTotalAmount(Cart cart) {
         Price total = Price.create(BigDecimal.ZERO);
 
-        for (CartEntry entry: cart.getEntries().values()) {
+        for (CartEntry entry: cart.getEntries()) {
             total = total.add(calculateEntryAmount(entry));
         }
         return total;

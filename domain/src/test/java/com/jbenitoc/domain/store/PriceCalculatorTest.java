@@ -4,13 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -51,7 +49,7 @@ class PriceCalculatorTest {
     @Test
     void givenAnEmptyCart_whenCalculateTotalAmount_thenItReturnsZero() {
         Cart cart = mock(Cart.class);
-        when(cart.getEntries()).thenReturn(emptyMap());
+        when(cart.getEntries()).thenReturn(emptyList());
 
         Price total = priceCalculator.calculateTotalAmount(cart);
 
@@ -84,9 +82,8 @@ class PriceCalculatorTest {
         return CartEntry.create(item.getCode(), ItemQuantity.create(quantity));
     }
 
-    private Map<ItemCode, CartEntry> someEntries(CartEntry... entries) {
-        Map<ItemCode, CartEntry> entryMap = new HashMap<>();
-        Arrays.stream(entries).forEach(entry -> entryMap.put(entry.getItemCode(), entry));
-        return entryMap;
+    private List<CartEntry> someEntries(CartEntry... entries) {
+        return asList(entries);
     }
+
 }
