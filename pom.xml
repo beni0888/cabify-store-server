@@ -12,7 +12,7 @@
   <modules>
     <module>domain</module>
     <module>application</module>
-    <module>infrastructure-rest</module>
+    <module>infrastructure</module>
     <module>spring-boot-admin-server</module>
   </modules>
 
