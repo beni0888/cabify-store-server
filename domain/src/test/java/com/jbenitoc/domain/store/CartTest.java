@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static com.jbenitoc.domain.store.ItemQuantity.ONE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CartTest {
@@ -15,7 +16,7 @@ class CartTest {
     @Test
     void givenAnItemAndAQuantity_whenAddItem_thenGivenQuantityOfItemsAreAddedToCart() {
         Item item = anItem("VOUCHER", "Cabify Voucher", BigDecimal.valueOf(5.0));
-        ItemQuantity quantity = ItemQuantity.create(1);
+        ItemQuantity quantity = ONE;
 
         cart.addEntry(item, quantity);
         Optional<CartEntry> cartEntry = cart.getEntry(item.getCode());
@@ -28,7 +29,7 @@ class CartTest {
     @Test
     void givenAnItemWhichIsAlreadyInTheCartAndAQuantity_whenAddItem_thenTheQuantityOfTheGivenItemInTheCartIsIncreasedInTheGivenQuantity() {
         Item item = anItem("VOUCHER", "Cabify Voucher", BigDecimal.valueOf(5.0));
-        cart.addEntry(item, ItemQuantity.create(1));
+        cart.addEntry(item, ONE);
 
         cart.addEntry(item, ItemQuantity.create(2));
         Optional<CartEntry> cartEntry = cart.getEntry(item.getCode());
@@ -41,8 +42,8 @@ class CartTest {
         Item item1 = anItem("VOUCHER", "Cabify Voucher", BigDecimal.valueOf(5.0));
         Item item2 = anItem("TSHIRT", "Cabify T-shirt", BigDecimal.valueOf(1.0));
 
-        cart.addEntry(item1, ItemQuantity.create(1));
-        cart.addEntry(item2, ItemQuantity.create(1));
+        cart.addEntry(item1, ONE);
+        cart.addEntry(item2, ONE);
 
         Stream.of(item1, item2).forEach(item -> assertThat(cart.getEntry(item.getCode())).isNotEmpty());
     }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import static com.jbenitoc.domain.store.ItemQuantity.ONE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -30,7 +31,7 @@ class AddItemToCartTest {
     void givenCartIdAndItemCodeAndQuantity_whenExecute_thenGivenQuantityOfItemsAreAddedToTheCart() {
         Cart cart = aCartMock();
         Item item = anItem(ITEM_CODE);
-        ItemQuantity quantity = ItemQuantity.create(1);
+        ItemQuantity quantity = ONE;
 
         when(cartRepository.findById(CART_ID)).thenReturn(Optional.of(cart));
         when(itemRepository.findByCode(ITEM_CODE)).thenReturn(Optional.of(anItem(ITEM_CODE)));
