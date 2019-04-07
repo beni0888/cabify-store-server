@@ -6,8 +6,12 @@ import java.math.BigDecimal;
 
 public final class Price extends ValueObject<BigDecimal> {
 
+    private static final int SCALE = 2;
+    private static final int ROUNDING_MODE = BigDecimal.ROUND_HALF_UP;
+
+
     private Price(BigDecimal price) {
-        super(price);
+        super(price.setScale(SCALE, ROUNDING_MODE));
     }
 
     public static Price create(BigDecimal price) {
