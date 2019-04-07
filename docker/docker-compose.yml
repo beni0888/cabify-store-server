@@ -1,0 +1,32 @@
+version: "2"
+services:
+  storeserver:
+    image: jbenitoc/cabify-store-server-bootapp
+    container_name: cabify-store-server
+    hostname: storeserver
+    entrypoint:
+      - "java"
+      - "-Djava.security.egd=file:/dev/./urandom"
+      - "-Dspring.boot.admin.client.url=http://adminserver:10011"
+      - "-jar"
+      - "/app.jar"
+    ports:
+      - "8080:8080"
+    links:
+      - adminserver:adminserver
+  adminserver:
+    image: jbenitoc/spring-boot-admin-server
+    container_name: cabify-admin-server
+    hostname: adminserver
+    ports:
+      - "10011:10011"
+  storeclient:
+    image: jbenitoc/cabify-store-client
+    container_name: cabify-store-client
+    hostname: storeclient
+    links:
+      - storeserver:storeserver
+    stdin_open: true
+    tty: true
+    environment:
+      SERVER_IP: storeserver
