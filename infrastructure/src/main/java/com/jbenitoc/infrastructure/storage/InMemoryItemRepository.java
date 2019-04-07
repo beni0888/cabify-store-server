@@ -5,14 +5,14 @@ import com.jbenitoc.domain.store.ItemCode;
 import com.jbenitoc.domain.store.ItemRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class InMemoryItemRepository implements ItemRepository {
 
-    private Map<ItemCode, Item> items = new ConcurrentHashMap<>();
+    private Map<ItemCode, Item> items = new HashMap<>();
 
     @Override
     public Optional<Item> findByCode(ItemCode itemCode) {
